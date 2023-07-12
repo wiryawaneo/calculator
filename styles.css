@@ -37,7 +37,23 @@ body {
 
 #display {
   flex-grow: 2;
-  background-color: black;
+  background-color: rgb(32, 32, 32);
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.displayFont {
+    color:rgb(214, 214, 214);
+    margin-left: auto;
+}
+
+#prevDisplay {
+font-size:2em;
+}
+
+#currentDisplay {
+    font-size:6rem;
 }
 
 #resettors {
@@ -45,7 +61,6 @@ body {
   justify-content: space-around;
   flex-direction: row;
   flex-grow: 1;
-  background-color: orange;
 }
 
 #inputs {
@@ -65,4 +80,5 @@ body {
       (((var(--flex-items) - 1) / var(--flex-items)) * var(--flex-gap))
   );
   height: 5rem;
+  cursor: pointer;
 }
