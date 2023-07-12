@@ -1,21 +1,68 @@
-html, body {
-    height: 100%;
+:root {
+    --flex-gap: 1rem; /* Variable for gap */
+}
+
+html,
+body {
+  height: 100%;
 }
 body {
-    margin: 0;
+  margin: 0;
 }
 
 #container {
-    height: 100%;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.default {
+  border-radius: 16px;
 }
 
 #calculator {
-  width: 30vw;
-  height: 70vh;
+  width: 30%;
+  height: 70%;
   background-color: grey;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 32px;
+  gap: 10px;
+}
+
+#display {
+  flex-grow: 2;
+  background-color: black;
+}
+
+#resettors {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-grow: 1;
+  background-color: orange;
+}
+
+#inputs {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--flex-gap);
+}
+
+/* https://stackoverflow.com/questions/66240486/flex-gap-and-flex-wrap-with-percentages */
+
+.number {
+    --flex-items: 3; /* Variable for number of items */
+  width: calc(
+    (100% / var(--flex-items)) -
+      (((var(--flex-items) - 1) / var(--flex-items)) * var(--flex-gap))
+  );
+  height: 5rem;
 }
