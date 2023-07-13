@@ -41,50 +41,83 @@ const elements = document.querySelectorAll(".number");
 let firstValue = "";
 let secondValue = "";
 let currentOperator = "";
+let numberArr = [];
 elements.forEach((number) => {
   number.addEventListener("click", function handleClick(event) {
-    // console.log("box clicked", event.target.textContent);
     //get first value
-    if (!isNaN(event.target.textContent) && currentOperator === "") {
+    if (!isNaN(event.target.textContent)) {
+      if (numberArr.length != 0) {
+        firstValue += event.target.textContent;
+        return (document.getElementById("currentDisplay").innerHTML =
+          numberArr[numberArr.length - 1] + currentOperator + firstValue);
+      }
       firstValue += event.target.textContent;
-      return (document.getElementById("currentDisplay").innerHTML = firstValue);
-    }
-    //get operator
-    else if (
-      (event.target.textContent === "+" ||
-        event.target.textContent === "-" ||
-        event.target.textContent === "x" ||
-        event.target.textContent === "/") &&
-      firstValue &&
-      currentOperator === ""
-    ) {
-      //   console.log("operator added");
-      currentOperator += event.target.textContent;
       return (document.getElementById("currentDisplay").innerHTML =
         firstValue + currentOperator);
     }
-    //get second value
+    //get operator
     else if (
-      firstValue &&
-      currentOperator &&
-      !isNaN(event.target.textContent)
+      event.target.textContent === "+" ||
+      event.target.textContent === "-" ||
+      event.target.textContent === "x" ||
+      event.target.textContent === "/"
+      // && firstValue
     ) {
-      secondValue += event.target.textContent;
-      return (document.getElementById("currentDisplay").innerHTML =
-        firstValue + currentOperator + secondValue);
-    }
-    //operate calculations
-    else if (event.target.textContent === "=" && currentOperator) {
-      if (!currentOperator) {
+      console.log(numberArr);
+      if (numberArr.length <= 1) {
+        numberArr.push(parseInt(firstValue));
+        firstValue = "";
+        console.log(numberArr);
+        currentOperator = event.target.textContent;
         return (document.getElementById("currentDisplay").innerHTML =
-          firstValue);
-      } else {
-        firstValue = operate(parseInt(firstValue), currentOperator, parseInt(secondValue));
-        document.getElementById("currentDisplay").innerHTML = firstValue;
-        secondValue = "";
-        currentOperator = "";
-        return;
+          numberArr[numberArr.length - 1] + currentOperator);
+      } else if (total) {
+        total = "";
+        currentOperator = event.target.textContent;
+        return (document.getElementById("currentDisplay").innerHTML =
+          numberArr[numberArr.length - 1] + currentOperator);
       }
+      //   else {
+      //     total = operate(
+      //       numberArr[numberArr.length - 2],
+      //       currentOperator,
+      //       numberArr[numberArr.length - 1]
+      //     );
+      //     numberArr.push(total);
+      //     console.log(numberArr);
+      //     currentOperator = event.target.textContent;
+      //     return (document.getElementById("currentDisplay").innerHTML =
+      //       total + currentOperator);
+      //   }
+    }
+
+    //get second value
+    // else if (
+    //   firstValue &&
+    //   currentOperator &&
+    //   !isNaN(event.target.textContent)
+    // ) {
+    //   secondValue += event.target.textContent;
+    //   return (document.getElementById("currentDisplay").innerHTML =
+    //     numberArr[0] + currentOperator + secondValue);
+    // }
+    //equal button calculations
+    else if (event.target.textContent === "=" && currentOperator) {
+      numberArr.push(parseInt(firstValue));
+      firstValue = "";
+      total = operate(
+        numberArr[numberArr.length - 2],
+        currentOperator,
+        numberArr[numberArr.length - 1]
+      );
+      numberArr.push(total);
+      console.log(numberArr);
+      document.getElementById("prevDisplay").innerHTML =
+        numberArr[numberArr.length - 3] +
+        currentOperator +
+        numberArr[numberArr.length - 2];
+      console.log(total);
+      return (document.getElementById("currentDisplay").innerHTML = total);
     }
   });
 });
