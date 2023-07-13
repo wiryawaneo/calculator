@@ -15,13 +15,6 @@ const divide = (num1, num2) => {
   return num1 / num2;
 };
 
-//testing operators
-// console.log("add", add(1, 2));
-// console.log("subtract", subtract(3, 1));
-// console.log("multiply", multiply(3, 5));
-// console.log("divide", divide(5, 2));
-
-// const firstNumber = 0;
 //calls a function based on operator called
 const operators = {
   "+": add,
@@ -59,8 +52,10 @@ elements.forEach((number) => {
     }
     //opearator functions
     else if (
-      isNaN(event.target.textContent) &&
-      event.target.textContent != "=" &&
+      (event.target.textContent === "+" ||
+        event.target.textContent === "-" ||
+        event.target.textContent === "x" ||
+        event.target.textContent === "/") &&
       firstValue
     ) {
       if (!currentOperator) {
@@ -70,7 +65,6 @@ elements.forEach((number) => {
           numberArr.push(parseInt(firstValue));
           firstValue = "";
         }
-        console.log("NO OPERATOR", numberArr);
         document.getElementById("currentDisplay").innerHTML =
           numberArr[numberArr.length - 1] + currentOperator;
       }
@@ -85,7 +79,11 @@ elements.forEach((number) => {
           numberArr[numberArr.length - 1]
         );
         numberArr.push(total);
-        // console.log(numberArr);
+        document.getElementById("prevDisplay").innerHTML =
+          numberArr[numberArr.length - 3] +
+          currentOperator +
+          numberArr[numberArr.length - 2];
+        currentOperator = "";
         currentOperator = event.target.textContent;
         return (document.getElementById("currentDisplay").innerHTML =
           total + currentOperator);
@@ -94,7 +92,10 @@ elements.forEach((number) => {
     // equal button function
     else if (event.target.textContent === "=" && currentOperator) {
       numberArr.push(parseInt(firstValue));
-      console.log(numberArr);
+      numberArr[numberArr.length - 1] = numberArr[numberArr.length - 1]
+        ? numberArr[numberArr.length - 1]
+        : 0;
+
       total = operate(
         numberArr[numberArr.length - 2],
         currentOperator,
@@ -108,6 +109,24 @@ elements.forEach((number) => {
         numberArr[numberArr.length - 2];
       currentOperator = "";
       return (document.getElementById("currentDisplay").innerHTML = total);
+    } else if (event.target.textContent === "Clear") {
+      firstValue = "";
+      secondValue = "";
+      currentOperator = "";
+      total = "";
+      numberArr = [];
+      document.getElementById("currentDisplay").innerHTML = 0;
+    } else if (event.target.textContent === "Delete") {
+      const currentNumber = [
+        ...document.getElementById("currentDisplay").innerHTML,
+      ];
+      deletedNumber = currentNumber.pop();
+      newNumber = currentNumber.join("");
+      console.log(newNumber);
+      if (!newNumber) {
+        return (document.getElementById("currentDisplay").innerHTML = 0);
+      }
+      return (document.getElementById("currentDisplay").innerHTML = newNumber);
     }
   });
 });
