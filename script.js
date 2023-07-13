@@ -36,11 +36,39 @@ const operate = (firstNumber, operator, secondNumber) => {
   return operators[operator](firstNumber, secondNumber);
 };
 
-const elements = document.querySelectorAll('.number');
-
-elements.forEach (number => {
-    number.addEventListener('click', function handleClick(event) {
-        console.log('box clicked', event.target.textContent)
-    })
-})
-
+//receive value from button clicked
+const elements = document.querySelectorAll(".number");
+let firstValue = "";
+let secondValue = "";
+let currentOperator = "";
+elements.forEach((number) => {
+  number.addEventListener("click", function handleClick(event) {
+    console.log("box clicked", event.target.textContent);
+    //get first value
+    if (!isNaN(event.target.textContent) && currentOperator === "") {
+      firstValue += event.target.textContent;
+      return (document.getElementById("currentDisplay").innerHTML = firstValue);
+    }
+    //get operator
+    else if (
+      isNaN(event.target.textContent) &&
+      firstValue &&
+      currentOperator === ""
+    ) {
+      console.log("operator added");
+      currentOperator += event.target.textContent;
+      return (document.getElementById("currentDisplay").innerHTML =
+        firstValue + currentOperator);
+    } 
+    //get second value
+    else if (
+      firstValue &&
+      currentOperator &&
+      !isNaN(event.target.textContent)
+    ) {
+      secondValue += event.target.textContent;
+      return (document.getElementById("currentDisplay").innerHTML =
+        firstValue + currentOperator + secondValue);
+    }
+  });
+});
