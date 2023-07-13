@@ -21,15 +21,15 @@ const divide = (num1, num2) => {
 // console.log("multiply", multiply(3, 5));
 // console.log("divide", divide(5, 2));
 
-const firstNumber = 0;
+// const firstNumber = 0;
 //calls a function based on operator called
 const operators = {
   "+": add,
   "-": subtract,
-  "*": multiply,
+  x: multiply,
   "/": divide,
 };
-const secondNumber = 0;
+// const secondNumber = 0;
 
 //run operator
 const operate = (firstNumber, operator, secondNumber) => {
@@ -43,7 +43,7 @@ let secondValue = "";
 let currentOperator = "";
 elements.forEach((number) => {
   number.addEventListener("click", function handleClick(event) {
-    console.log("box clicked", event.target.textContent);
+    // console.log("box clicked", event.target.textContent);
     //get first value
     if (!isNaN(event.target.textContent) && currentOperator === "") {
       firstValue += event.target.textContent;
@@ -51,15 +51,18 @@ elements.forEach((number) => {
     }
     //get operator
     else if (
-      isNaN(event.target.textContent) &&
+      (event.target.textContent === "+" ||
+        event.target.textContent === "-" ||
+        event.target.textContent === "x" ||
+        event.target.textContent === "/") &&
       firstValue &&
       currentOperator === ""
     ) {
-      console.log("operator added");
+      //   console.log("operator added");
       currentOperator += event.target.textContent;
       return (document.getElementById("currentDisplay").innerHTML =
         firstValue + currentOperator);
-    } 
+    }
     //get second value
     else if (
       firstValue &&
@@ -69,6 +72,19 @@ elements.forEach((number) => {
       secondValue += event.target.textContent;
       return (document.getElementById("currentDisplay").innerHTML =
         firstValue + currentOperator + secondValue);
+    }
+    //operate calculations
+    else if (event.target.textContent === "=" && currentOperator) {
+      if (!currentOperator) {
+        return (document.getElementById("currentDisplay").innerHTML =
+          firstValue);
+      } else {
+        firstValue = operate(parseInt(firstValue), currentOperator, parseInt(secondValue));
+        document.getElementById("currentDisplay").innerHTML = firstValue;
+        secondValue = "";
+        currentOperator = "";
+        return;
+      }
     }
   });
 });
