@@ -41,10 +41,12 @@ const elements = document.querySelectorAll(".number");
 let firstValue = "";
 let secondValue = "";
 let currentOperator = "";
+let total = "";
 let numberArr = [];
+//loop each button
 elements.forEach((number) => {
   number.addEventListener("click", function handleClick(event) {
-    //get first value
+    //get first value function
     if (!isNaN(event.target.textContent)) {
       if (numberArr.length != 0) {
         firstValue += event.target.textContent;
@@ -55,68 +57,56 @@ elements.forEach((number) => {
       return (document.getElementById("currentDisplay").innerHTML =
         firstValue + currentOperator);
     }
-    //get operator
+    //opearator functions
     else if (
-      event.target.textContent === "+" ||
-      event.target.textContent === "-" ||
-      event.target.textContent === "x" ||
-      event.target.textContent === "/"
-      // && firstValue
+      isNaN(event.target.textContent) &&
+      event.target.textContent != "=" &&
+      firstValue
     ) {
-      console.log(numberArr);
-      if (numberArr.length <= 1) {
+      if (!currentOperator) {
+        //if no operator found AKA first time entering value
+        currentOperator = event.target.textContent;
+        if (firstValue) {
+          numberArr.push(parseInt(firstValue));
+          firstValue = "";
+        }
+        console.log("NO OPERATOR", numberArr);
+        document.getElementById("currentDisplay").innerHTML =
+          numberArr[numberArr.length - 1] + currentOperator;
+      }
+
+      //if there is an operator AKA calculation needed
+      else if (currentOperator) {
         numberArr.push(parseInt(firstValue));
         firstValue = "";
-        console.log(numberArr);
+        total = operate(
+          numberArr[numberArr.length - 2],
+          currentOperator,
+          numberArr[numberArr.length - 1]
+        );
+        numberArr.push(total);
+        // console.log(numberArr);
         currentOperator = event.target.textContent;
         return (document.getElementById("currentDisplay").innerHTML =
-          numberArr[numberArr.length - 1] + currentOperator);
-      } else if (total) {
-        total = "";
-        currentOperator = event.target.textContent;
-        return (document.getElementById("currentDisplay").innerHTML =
-          numberArr[numberArr.length - 1] + currentOperator);
+          total + currentOperator);
       }
-      //   else {
-      //     total = operate(
-      //       numberArr[numberArr.length - 2],
-      //       currentOperator,
-      //       numberArr[numberArr.length - 1]
-      //     );
-      //     numberArr.push(total);
-      //     console.log(numberArr);
-      //     currentOperator = event.target.textContent;
-      //     return (document.getElementById("currentDisplay").innerHTML =
-      //       total + currentOperator);
-      //   }
     }
-
-    //get second value
-    // else if (
-    //   firstValue &&
-    //   currentOperator &&
-    //   !isNaN(event.target.textContent)
-    // ) {
-    //   secondValue += event.target.textContent;
-    //   return (document.getElementById("currentDisplay").innerHTML =
-    //     numberArr[0] + currentOperator + secondValue);
-    // }
-    //equal button calculations
+    // equal button function
     else if (event.target.textContent === "=" && currentOperator) {
       numberArr.push(parseInt(firstValue));
-      firstValue = "";
+      console.log(numberArr);
       total = operate(
         numberArr[numberArr.length - 2],
         currentOperator,
         numberArr[numberArr.length - 1]
       );
+      firstValue = total;
       numberArr.push(total);
-      console.log(numberArr);
       document.getElementById("prevDisplay").innerHTML =
         numberArr[numberArr.length - 3] +
         currentOperator +
         numberArr[numberArr.length - 2];
-      console.log(total);
+      currentOperator = "";
       return (document.getElementById("currentDisplay").innerHTML = total);
     }
   });
