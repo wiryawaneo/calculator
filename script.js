@@ -122,7 +122,6 @@ elements.forEach((number) => {
       ];
       deletedNumber = currentNumber.pop();
       newNumber = currentNumber.join("");
-      console.log(newNumber);
       if (!newNumber) {
         return (document.getElementById("currentDisplay").innerHTML = 0);
       }
