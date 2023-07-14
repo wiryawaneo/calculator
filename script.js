@@ -84,7 +84,7 @@ operatorOptions.forEach((operatorOption) => {
 });
 
 //Click function for results
-const result = equal.addEventListener("click", () => {
+function getResult() {
   if (!currentOperator || !secondValue) {
     previousNumber.innerHTML = firstValue;
   } else {
@@ -100,21 +100,18 @@ const result = equal.addEventListener("click", () => {
     secondValue = "";
     return;
   }
-});
+}
 
 //reset calculator
-const reset = clear.addEventListener("click", () => {
+function resetCalc() {
   firstValue = "";
   secondValue = "";
   currentOperator = "";
   previousNumber.innerHTML = "";
   currentNumber.innerHTML = 0;
   return;
-});
-
-//remove value
-const deletion = remove.addEventListener("click", removeValue);
-
+}
+//remove value function
 function removeValue() {
   if (secondValue) {
     console.log("delete second");
@@ -134,16 +131,21 @@ function removeValue() {
   }
 }
 
-// //KEYPRESS
+//click event listeners
+const result = equal.addEventListener("click", getResult);
+const reset = clear.addEventListener("click", resetCalc);
+const deletion = remove.addEventListener("click", removeValue);
+
+// //keypress event listeners
 window.addEventListener("keydown", getKeyboardInput);
 
 function getKeyboardInput(e) {
   if (!isNaN(e.key)) {
     console.log("number " + e.key);
   } else if (e.key === "=") {
-    console.log("equal " + e.key);
+    getResult();
   } else if (e.key === "Backspace") {
-    console.log("delete " + e.key);
+    removeValue();
   } else if (
     e.key === "+" ||
     e.key === "-" ||
@@ -152,5 +154,7 @@ function getKeyboardInput(e) {
     e.key === "/"
   ) {
     console.log("operator " + e.key);
+  } else if (e.key === "Escape") {
+    resetCalc();
   }
 }
