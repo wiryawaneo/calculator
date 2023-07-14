@@ -76,7 +76,7 @@ body {
 
 /* https://stackoverflow.com/questions/66240486/flex-gap-and-flex-wrap-with-percentages */
 
-.number {
+button {
   --flex-items: 4; /* Variable for number of items */
   width: calc(
     (100% / var(--flex-items)) -
