@@ -91,7 +91,7 @@ function getResult() {
     );
     previousNumber.innerHTML = firstValue + currentOperator + secondValue;
     currentNumber.innerHTML = result;
-    firstValue = result;
+    firstValue = result.toString();
     currentOperator = "";
     secondValue = "";
     return;
@@ -147,7 +147,7 @@ window.addEventListener("keydown", getKeyboardInput);
 
 function getKeyboardInput(e) {
   if (!isNaN(e.key)) {
-    chosenNumber(e.key)
+    chosenNumber(e.key);
   } else if (e.key === "=") {
     getResult();
   } else if (e.key === "Backspace") {
@@ -159,7 +159,7 @@ function getKeyboardInput(e) {
     e.key === "x" ||
     e.key === "/"
   ) {
-    chosenOperator(e.key)
+    chosenOperator(e.key);
   } else if (e.key === "Escape") {
     resetCalc();
   }
