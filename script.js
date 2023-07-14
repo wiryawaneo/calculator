@@ -44,44 +44,40 @@ secondValue = "";
 currentOperator = "";
 
 //Click functions for all the numbers
-numbers.forEach((number) => {
-  number.addEventListener("click", (event) => {
-    let currentNumber = parseInt(event.target.innerHTML);
-    if (!currentOperator) {
-      firstValue += currentNumber;
-      return (currentDisplay.innerHTML =
-        firstValue + currentOperator + secondValue);
-    } else if (currentOperator) {
-      secondValue += parseInt(currentNumber);
-      return (currentDisplay.innerHTML =
-        firstValue + currentOperator + secondValue);
-    }
-  });
-});
+function chosenNumber(clickedNumber) {
+  let currentNumber = parseInt(clickedNumber);
+  if (!currentOperator) {
+    firstValue += currentNumber;
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  } else if (currentOperator) {
+    secondValue += parseInt(currentNumber);
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  }
+}
 
 //Click functions for all the operators
-operatorOptions.forEach((operatorOption) => {
-  operatorOption.addEventListener("click", (event) => {
-    let clickedOperator = event.target.innerHTML;
-    if (firstValue && !secondValue) {
-      currentOperator = clickedOperator;
-      return (currentDisplay.innerHTML =
-        firstValue + currentOperator + secondValue);
-    } else if (firstValue && secondValue) {
-      const result = operate(
-        parseInt(firstValue),
-        currentOperator,
-        parseInt(secondValue)
-      );
-      firstValue = result;
-      secondValue = "";
-      currentOperator = clickedOperator;
-      previousNumber.innerHTML = firstValue + currentOperator + secondValue;
-      return (currentDisplay.innerHTML =
-        firstValue + currentOperator + secondValue);
-    }
-  });
-});
+function chosenOperator(clickOperator) {
+  let clickedOperator = clickOperator;
+  if (firstValue && !secondValue) {
+    currentOperator = clickedOperator;
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  } else if (firstValue && secondValue) {
+    const result = operate(
+      parseInt(firstValue),
+      currentOperator,
+      parseInt(secondValue)
+    );
+    firstValue = result;
+    secondValue = "";
+    currentOperator = clickedOperator;
+    previousNumber.innerHTML = firstValue + currentOperator + secondValue;
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  }
+}
 
 //Click function for results
 function getResult() {
@@ -132,16 +128,26 @@ function removeValue() {
 }
 
 //click event listeners
-const result = equal.addEventListener("click", getResult);
-const reset = clear.addEventListener("click", resetCalc);
-const deletion = remove.addEventListener("click", removeValue);
+numbers.forEach((number) => {
+  number.addEventListener("click", (event) =>
+    chosenNumber(event.target.innerHTML)
+  );
+});
+operatorOptions.forEach((operatorOption) => {
+  operatorOption.addEventListener("click", (event) =>
+    chosenOperator(event.target.innerHTML)
+  );
+});
+equal.addEventListener("click", getResult);
+clear.addEventListener("click", resetCalc);
+remove.addEventListener("click", removeValue);
 
 // //keypress event listeners
 window.addEventListener("keydown", getKeyboardInput);
 
 function getKeyboardInput(e) {
   if (!isNaN(e.key)) {
-    console.log("number " + e.key);
+    chosenNumber(e.key)
   } else if (e.key === "=") {
     getResult();
   } else if (e.key === "Backspace") {
@@ -153,7 +159,7 @@ function getKeyboardInput(e) {
     e.key === "x" ||
     e.key === "/"
   ) {
-    console.log("operator " + e.key);
+    chosenOperator(e.key)
   } else if (e.key === "Escape") {
     resetCalc();
   }
