@@ -33,6 +33,7 @@ const numbers = document.querySelectorAll(".number");
 const operatorOptions = document.querySelectorAll(".operator");
 const equal = document.querySelector(".equal");
 const clear = document.querySelector(".clear");
+const remove = document.querySelector(".delete");
 const currentNumber = document.getElementById("currentDisplay");
 const previousNumber = document.getElementById("prevDisplay");
 firstValue = "";
@@ -91,10 +92,14 @@ const result = equal.addEventListener("click", () => {
     );
     previousNumber.innerHTML = firstValue + currentOperator + secondValue;
     currentNumber.innerHTML = result;
+    firstValue = result;
+    currentOperator = "";
+    secondValue = "";
     return;
   }
 });
 
+//reset calculator
 const reset = clear.addEventListener("click", () => {
   firstValue = "";
   secondValue = "";
@@ -102,4 +107,23 @@ const reset = clear.addEventListener("click", () => {
   previousNumber.innerHTML = "";
   currentNumber.innerHTML = 0;
   return;
+});
+
+//remove value
+const deletion = remove.addEventListener("click", () => {
+  if (secondValue) {
+    console.log("delete second");
+    secondValue = secondValue.toString().slice(0, -1);
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  } else if (currentOperator) {
+    console.log("delete op");
+    currentOperator = currentOperator.toString().slice(0, -1);
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  } else if (firstValue) {
+    firstValue = firstValue.toString().slice(0, -1);
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  }
 });
