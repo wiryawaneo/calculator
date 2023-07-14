@@ -25,7 +25,9 @@ const operators = {
 
 // //run operator
 const operate = (firstNumber, operator, secondNumber) => {
-  return operators[operator](firstNumber, secondNumber);
+  return (
+    Math.round(operators[operator](firstNumber, secondNumber) * 1000) / 1000
+  );
 };
 
 //set variables
@@ -36,6 +38,7 @@ const clear = document.querySelector(".clear");
 const remove = document.querySelector(".delete");
 const currentNumber = document.getElementById("currentDisplay");
 const previousNumber = document.getElementById("prevDisplay");
+// const currentResult = firstValue + currentOperator + secondValue;
 firstValue = "";
 secondValue = "";
 currentOperator = "";
@@ -43,13 +46,13 @@ currentOperator = "";
 //Click functions for all the numbers
 numbers.forEach((number) => {
   number.addEventListener("click", (event) => {
-    let currentNumber = event.target.innerHTML;
+    let currentNumber = parseInt(event.target.innerHTML);
     if (!currentOperator) {
       firstValue += currentNumber;
       return (currentDisplay.innerHTML =
         firstValue + currentOperator + secondValue);
     } else if (currentOperator) {
-      secondValue += currentNumber;
+      secondValue += parseInt(currentNumber);
       return (currentDisplay.innerHTML =
         firstValue + currentOperator + secondValue);
     }
@@ -110,7 +113,9 @@ const reset = clear.addEventListener("click", () => {
 });
 
 //remove value
-const deletion = remove.addEventListener("click", () => {
+const deletion = remove.addEventListener("click", removeValue);
+
+function removeValue() {
   if (secondValue) {
     console.log("delete second");
     secondValue = secondValue.toString().slice(0, -1);
@@ -123,7 +128,29 @@ const deletion = remove.addEventListener("click", () => {
       firstValue + currentOperator + secondValue);
   } else if (firstValue) {
     firstValue = firstValue.toString().slice(0, -1);
+    firstValue = firstValue ? firstValue : 0;
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   }
-});
+}
+
+// //KEYPRESS
+window.addEventListener("keydown", getKeyboardInput);
+
+function getKeyboardInput(e) {
+  if (!isNaN(e.key)) {
+    console.log("number " + e.key);
+  } else if (e.key === "=") {
+    console.log("equal " + e.key);
+  } else if (e.key === "Backspace") {
+    console.log("delete " + e.key);
+  } else if (
+    e.key === "+" ||
+    e.key === "-" ||
+    e.key === "*" ||
+    e.key === "x" ||
+    e.key === "/"
+  ) {
+    console.log("operator " + e.key);
+  }
+}
