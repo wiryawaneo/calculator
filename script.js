@@ -32,12 +32,14 @@ const operate = (firstNumber, operator, secondNumber) => {
 const numbers = document.querySelectorAll(".number");
 const operatorOptions = document.querySelectorAll(".operator");
 const equal = document.querySelector(".equal");
+const clear = document.querySelector(".clear");
 const currentNumber = document.getElementById("currentDisplay");
 const previousNumber = document.getElementById("prevDisplay");
 firstValue = "";
 secondValue = "";
 currentOperator = "";
 
+//Click functions for all the numbers
 numbers.forEach((number) => {
   number.addEventListener("click", (event) => {
     let currentNumber = event.target.innerHTML;
@@ -53,6 +55,7 @@ numbers.forEach((number) => {
   });
 });
 
+//Click functions for all the operators
 operatorOptions.forEach((operatorOption) => {
   operatorOption.addEventListener("click", (event) => {
     let clickedOperator = event.target.innerHTML;
@@ -76,6 +79,7 @@ operatorOptions.forEach((operatorOption) => {
   });
 });
 
+//Click function for results
 const result = equal.addEventListener("click", () => {
   if (!currentOperator || !secondValue) {
     previousNumber.innerHTML = firstValue;
@@ -89,4 +93,13 @@ const result = equal.addEventListener("click", () => {
     currentNumber.innerHTML = result;
     return;
   }
+});
+
+const reset = clear.addEventListener("click", () => {
+  firstValue = "";
+  secondValue = "";
+  currentOperator = "";
+  previousNumber.innerHTML = "";
+  currentNumber.innerHTML = 0;
+  return;
 });
