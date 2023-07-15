@@ -42,25 +42,29 @@ const clear = document.querySelector(".clear");
 const remove = document.querySelector(".delete");
 const currentNumber = document.getElementById("currentDisplay");
 const previousNumber = document.getElementById("prevDisplay");
-// const currentResult = firstValue + currentOperator + secondValue;
 firstValue = "";
 secondValue = "";
+result = "";
 currentOperator = "";
 
 //Click functions for all the numbers
 function chosenNumber(clickedNumber) {
   let currentNumber = parseInt(clickedNumber);
+  //Does not allow user to put more than one zero for first value
   if (!currentOperator) {
-    if (firstValue === "0" && currentNumber === "0") {
+    if (firstValue == "0" && currentNumber == "0") {
       return;
     }
+    //String up first value to allow user to enter a string of number
     firstValue += currentNumber;
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   } else if (currentOperator) {
-    if (secondValue === "0") {
+    //does not allow user to put more than one zero for second value
+    if (secondValue == "0") {
       return;
     }
+    //String up second value to allow user to enter a string of number
     secondValue += parseInt(currentNumber);
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
@@ -70,23 +74,28 @@ function chosenNumber(clickedNumber) {
 //Click functions for all the operators
 function chosenOperator(clickOperator) {
   let clickedOperator = clickOperator;
-
-  //   if (clickOperator === "-") {
-  //     currentOperator = clickOperator;
-  //     return (currentDisplay.innerHTML =
-  //       firstValue + currentOperator + secondValue);
-  //   }
+  //If user does an operator right after receiving = result...
+  if ((result || result === 0) && !-firstValue) {
+    currentOperator = clickedOperator;
+    firstValue = result;
+    result = "";
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  }
+  //User's first operator input
   if ((+firstValue || firstValue === "0") && !secondValue) {
     currentOperator = clickedOperator;
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
-  } else if (
+  }
+  //User's second operator input that automatically compiles the result first
+  else if (
     (+firstValue || firstValue === "0") &&
     (+secondValue || secondValue === "0")
   ) {
-    const result = operate(firstValue, currentOperator, secondValue);
-    previousNumber.innerHTML = firstValue + currentOperator + secondValue;
-    firstValue = result;
+    const opResult = operate(firstValue, currentOperator, secondValue);
+    previousNumber.innerHTML = firstValue + currentOperator + secondValue + "=";
+    firstValue = opResult;
     secondValue = "";
     currentOperator = clickedOperator;
     return (currentDisplay.innerHTML =
@@ -95,13 +104,13 @@ function chosenOperator(clickOperator) {
 }
 
 //Click function for decimal
-
+//Allow user to put one decimal point per string
 function getDecimal() {
-  if (!secondValue && firstValue) {
+  if (!secondValue && !currentOperator && firstValue.includes(".") === false) {
     firstValue += ".";
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
-  } else if (secondValue) {
+  } else if (currentOperator && secondValue.includes(".") === false) {
     secondValue += ".";
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
@@ -110,11 +119,14 @@ function getDecimal() {
 
 //Click function for results
 function getResult() {
+  if (result || result === 0) {
+    return previousNumber.innerHTML = result + "=";
+  }
   if (!currentOperator || !secondValue) {
     previousNumber.innerHTML = firstValue;
   } else {
-    const result = operate(firstValue, currentOperator, secondValue);
-    previousNumber.innerHTML = firstValue + currentOperator + secondValue;
+    result = operate(firstValue, currentOperator, secondValue);
+    previousNumber.innerHTML = firstValue + currentOperator + secondValue + "=";
     currentNumber.innerHTML = result;
     firstValue = "";
     currentOperator = "";
@@ -177,7 +189,7 @@ window.addEventListener("keydown", getKeyboardInput);
 function getKeyboardInput(e) {
   if (!isNaN(e.key)) {
     chosenNumber(e.key);
-  } else if (e.key === "=") {
+  } else if (e.key === "=" || e.key === "Enter") {
     getResult();
   } else if (e.key === "Backspace") {
     removeValue();
@@ -197,5 +209,4 @@ function getKeyboardInput(e) {
   }
 }
 
-//when spamming equal after total, prevDisplay disappear
 //user cant enter negative value
