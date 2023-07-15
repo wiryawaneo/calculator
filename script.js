@@ -45,9 +45,6 @@ currentOperator = "";
 
 //Click functions for all the numbers
 function chosenNumber(clickedNumber) {
-  if (firstValue === 0) {
-    firstValue = "";
-  }
   let currentNumber = parseInt(clickedNumber);
   if (!currentOperator) {
     firstValue += currentNumber;
@@ -94,7 +91,7 @@ function getResult() {
     );
     previousNumber.innerHTML = firstValue + currentOperator + secondValue;
     currentNumber.innerHTML = result;
-    firstValue = result.toString();
+    firstValue = "";
     currentOperator = "";
     secondValue = "";
     return;
