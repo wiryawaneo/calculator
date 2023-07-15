@@ -48,6 +48,11 @@ body {
   color: rgb(214, 214, 214);
   margin-left: auto;
   padding-right: 5%;
+  transition: all 0.2s;
+}
+
+.displayFont.added {
+  transform: scale(1.11);
 }
 
 #prevDisplay {
@@ -56,20 +61,6 @@ body {
 
 #currentDisplay {
   font-size: 6rem;
-}
-
-.displayFont.added {
-  animation-name: pop;
-  animation-duration: 0.3s;
-}
-
-@keyframes pop {
-  from {
-    font-size: 7rem;
-  }
-  to {
-    font-size: 6rem;
-  }
 }
 
 #inputs {

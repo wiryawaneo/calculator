@@ -66,20 +66,9 @@ function chosenNumber(clickedNumber) {
     }
     //String up second value to allow user to enter a string of number
     secondValue += parseInt(currentNumber);
-    numberAnimate();
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   }
-}
-
-//Function to animate number input
-function numberAnimate() {
-  // currentNumber.removeChild("added");
-  // currentNumber.appendChild("added");
-  //   currentDisplay.className = "displayFont";
-  currentDisplay.className += " added";
-//   currentDisplay.className = "displayFont"
-//   setTimeout((currentDisplay.className = "displayFont"), 100);
 }
 
 //Click functions for all the operators
@@ -193,16 +182,31 @@ function removeValue() {
   }
 }
 
+//animation function
+function addTransition(e) {
+  if (e.propertyName == "transform") return;
+  currentDisplay.className += " added";
+}
+function removeTransition(e) {
+  if (e.propertyName !== "transform") return;
+  this.classList.remove("added");
+}
+
 //click event listeners
 numbers.forEach((number) => {
-  number.addEventListener("click", (event) =>
-    chosenNumber(event.target.innerHTML)
-  );
+  number.addEventListener("click", (event) => {
+    chosenNumber(event.target.innerHTML);
+    addTransition(event);
+  });
 });
+
+currentNumber.addEventListener("transitionend", removeTransition);
+
 operatorOptions.forEach((operatorOption) => {
-  operatorOption.addEventListener("click", (event) =>
-    chosenOperator(event.target.innerHTML)
-  );
+  operatorOption.addEventListener("click", (event) => {
+    chosenOperator(event.target.innerHTML);
+    addTransition(event);
+  });
 });
 equal.addEventListener("click", getResult);
 decimal.addEventListener("click", getDecimal);
@@ -215,6 +219,7 @@ window.addEventListener("keydown", getKeyboardInput);
 
 //key press functions
 function getKeyboardInput(e) {
+  addTransition(e);
   if (!isNaN(e.key)) {
     chosenNumber(e.key);
   } else if (e.key === "=" || e.key === "Enter") {
