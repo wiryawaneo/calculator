@@ -148,6 +148,7 @@ function resetCalc() {
   firstValue = "";
   secondValue = "";
   currentOperator = "";
+  result = "";
   previousNumber.innerHTML = "";
   currentNumber.innerHTML = "";
   return;
@@ -155,12 +156,10 @@ function resetCalc() {
 //remove value function
 function removeValue() {
   if (secondValue) {
-    console.log("delete second");
     secondValue = secondValue.toString().slice(0, -1);
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   } else if (currentOperator) {
-    console.log("delete op");
     currentOperator = currentOperator.toString().slice(0, -1);
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
@@ -208,10 +207,16 @@ operatorOptions.forEach((operatorOption) => {
     addTransition(event);
   });
 });
-equal.addEventListener("click", getResult);
-decimal.addEventListener("click", getDecimal);
+equal.addEventListener("click", (e) => {
+  getResult(), addTransition(e);
+});
+decimal.addEventListener("click", (e) => {
+  getDecimal(), addTransition(e);
+});
 clear.addEventListener("click", resetCalc);
-remove.addEventListener("click", removeValue);
+remove.addEventListener("click", (e) => {
+  removeValue(), addTransition(e);
+});
 
 //keypress event listeners
 //listen to keypress
