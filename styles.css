@@ -58,6 +58,20 @@ body {
   font-size: 6rem;
 }
 
+.displayFont.added {
+  animation-name: pop;
+  animation-duration: 0.3s;
+}
+
+@keyframes pop {
+  from {
+    font-size: 7rem;
+  }
+  to {
+    font-size: 6rem;
+  }
+}
+
 #inputs {
   flex-grow: 1;
   display: flex;

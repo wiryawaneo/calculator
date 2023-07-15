@@ -66,9 +66,20 @@ function chosenNumber(clickedNumber) {
     }
     //String up second value to allow user to enter a string of number
     secondValue += parseInt(currentNumber);
+    numberAnimate();
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   }
+}
+
+//Function to animate number input
+function numberAnimate() {
+  // currentNumber.removeChild("added");
+  // currentNumber.appendChild("added");
+  //   currentDisplay.className = "displayFont";
+  currentDisplay.className += " added";
+//   currentDisplay.className = "displayFont"
+//   setTimeout((currentDisplay.className = "displayFont"), 100);
 }
 
 //Click functions for all the operators
