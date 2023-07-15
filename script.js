@@ -199,8 +199,6 @@ numbers.forEach((number) => {
   });
 });
 
-currentNumber.addEventListener("transitionend", removeTransition);
-
 operatorOptions.forEach((operatorOption) => {
   operatorOption.addEventListener("click", (event) => {
     chosenOperator(event.target.innerHTML);
@@ -217,6 +215,9 @@ clear.addEventListener("click", resetCalc);
 remove.addEventListener("click", (e) => {
   removeValue(), addTransition(e);
 });
+
+//animation event listener
+currentNumber.addEventListener("transitionend", removeTransition);
 
 //keypress event listeners
 //listen to keypress
