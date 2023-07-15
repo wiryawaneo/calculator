@@ -80,7 +80,7 @@ function chosenOperator(clickOperator) {
       firstValue + currentOperator + secondValue);
   }
   //If user does an operator right after receiving = result...
-  if ((result || result === 0) && !firstValue) {
+  if ((result || result == "0") && !firstValue) {
     currentOperator = clickedOperator;
     firstValue = result;
     result = "";
@@ -124,6 +124,9 @@ function getDecimal() {
 
 //Click function for results
 function getResult() {
+  if (firstValue) {
+    result = "";
+  }
   if (result || result === 0) {
     return (previousNumber.innerHTML = result + "=");
   }
@@ -169,6 +172,13 @@ function removeValue() {
     }
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
+  } else if (result) {
+    result = result.toString().slice(0, -1);
+    result = result ? result : "";
+    if (result === "") {
+      return (currentDisplay.innerHTML = "0");
+    }
+    return (currentDisplay.innerHTML = result);
   }
 }
 
@@ -217,4 +227,4 @@ function getKeyboardInput(e) {
 }
 
 //ISSUES
-//user cant enter negative value
+//after result, if spam operator, 0 disappears

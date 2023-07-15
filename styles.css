@@ -1,5 +1,5 @@
 :root {
-  --flex-gap: 1rem; /* Variable for gap */
+  --flex-gap: 0.5rem; /* Variable for gap */
 }
 
 html,
@@ -32,16 +32,16 @@ body {
   flex-direction: column;
   padding: 20px;
   border-radius: 32px;
-  gap: 10px;
+  gap: 2rem;
 }
 
 #display {
-  flex-grow: 1;
+  height: 30%;
   background-color: rgb(32, 32, 32);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1em;
+  /* gap: 1em; */
 }
 
 .displayFont {
@@ -58,13 +58,6 @@ body {
   font-size: 6rem;
 }
 
-/* #resettors {
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
-  flex-grow: 1;
-} */
-
 #inputs {
   flex-grow: 1;
   display: flex;
@@ -75,9 +68,9 @@ body {
 }
 
 /* https://stackoverflow.com/questions/66240486/flex-gap-and-flex-wrap-with-percentages */
-
 button {
   --flex-items: 4; /* Variable for number of items */
+  flex-grow: 1;
   width: calc(
     (100% / var(--flex-items)) -
       (((var(--flex-items) - 1) / var(--flex-items)) * var(--flex-gap))
