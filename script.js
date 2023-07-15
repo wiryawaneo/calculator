@@ -26,7 +26,10 @@ const operators = {
 // //run operator
 const operate = (firstNumber, operator, secondNumber) => {
   return (
-    Math.round(operators[operator](firstNumber, secondNumber) * 1000) / 1000
+    Math.round(
+      operators[operator](parseFloat(firstNumber), parseFloat(secondNumber)) *
+        1000
+    ) / 1000
   );
 };
 
@@ -34,6 +37,7 @@ const operate = (firstNumber, operator, secondNumber) => {
 const numbers = document.querySelectorAll(".number");
 const operatorOptions = document.querySelectorAll(".operator");
 const equal = document.querySelector(".equal");
+const decimal = document.querySelector(".decimal");
 const clear = document.querySelector(".clear");
 const remove = document.querySelector(".delete");
 const currentNumber = document.getElementById("currentDisplay");
@@ -47,10 +51,16 @@ currentOperator = "";
 function chosenNumber(clickedNumber) {
   let currentNumber = parseInt(clickedNumber);
   if (!currentOperator) {
+    if (firstValue === "0" && currentNumber === "0") {
+      return;
+    }
     firstValue += currentNumber;
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   } else if (currentOperator) {
+    if (secondValue === "0") {
+      return;
+    }
     secondValue += parseInt(currentNumber);
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
@@ -60,20 +70,39 @@ function chosenNumber(clickedNumber) {
 //Click functions for all the operators
 function chosenOperator(clickOperator) {
   let clickedOperator = clickOperator;
-  if (firstValue && !secondValue) {
+
+  //   if (clickOperator === "-") {
+  //     currentOperator = clickOperator;
+  //     return (currentDisplay.innerHTML =
+  //       firstValue + currentOperator + secondValue);
+  //   }
+  if ((+firstValue || firstValue === "0") && !secondValue) {
     currentOperator = clickedOperator;
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
-  } else if (firstValue && secondValue) {
-    const result = operate(
-      parseInt(firstValue),
-      currentOperator,
-      parseInt(secondValue)
-    );
+  } else if (
+    (+firstValue || firstValue === "0") &&
+    (+secondValue || secondValue === "0")
+  ) {
+    const result = operate(firstValue, currentOperator, secondValue);
+    previousNumber.innerHTML = firstValue + currentOperator + secondValue;
     firstValue = result;
     secondValue = "";
     currentOperator = clickedOperator;
-    previousNumber.innerHTML = firstValue + currentOperator + secondValue;
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  }
+}
+
+//Click function for decimal
+
+function getDecimal() {
+  if (!secondValue && firstValue) {
+    firstValue += ".";
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  } else if (secondValue) {
+    secondValue += ".";
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   }
@@ -84,11 +113,7 @@ function getResult() {
   if (!currentOperator || !secondValue) {
     previousNumber.innerHTML = firstValue;
   } else {
-    const result = operate(
-      parseInt(firstValue),
-      currentOperator,
-      parseInt(secondValue)
-    );
+    const result = operate(firstValue, currentOperator, secondValue);
     previousNumber.innerHTML = firstValue + currentOperator + secondValue;
     currentNumber.innerHTML = result;
     firstValue = "";
@@ -104,7 +129,7 @@ function resetCalc() {
   secondValue = "";
   currentOperator = "";
   previousNumber.innerHTML = "";
-  currentNumber.innerHTML = 0;
+  currentNumber.innerHTML = "";
   return;
 }
 //remove value function
@@ -121,7 +146,10 @@ function removeValue() {
       firstValue + currentOperator + secondValue);
   } else if (firstValue) {
     firstValue = firstValue.toString().slice(0, -1);
-    firstValue = firstValue ? firstValue : 0;
+    firstValue = firstValue ? firstValue : "";
+    if (firstValue === "") {
+      return (currentDisplay.innerHTML = "0");
+    }
     return (currentDisplay.innerHTML =
       firstValue + currentOperator + secondValue);
   }
@@ -139,6 +167,7 @@ operatorOptions.forEach((operatorOption) => {
   );
 });
 equal.addEventListener("click", getResult);
+decimal.addEventListener("click", getDecimal);
 clear.addEventListener("click", resetCalc);
 remove.addEventListener("click", removeValue);
 
@@ -157,10 +186,16 @@ function getKeyboardInput(e) {
     e.key === "-" ||
     e.key === "*" ||
     e.key === "x" ||
+    e.key === "X" ||
     e.key === "/"
   ) {
-    chosenOperator(e.key);
+    chosenOperator(e.key.toLowerCase());
   } else if (e.key === "Escape") {
     resetCalc();
+  } else if (e.key === ".") {
+    getDecimal();
   }
 }
+
+//when spamming equal after total, prevDisplay disappear
+//user cant enter negative value
