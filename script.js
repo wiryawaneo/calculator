@@ -74,8 +74,13 @@ function chosenNumber(clickedNumber) {
 //Click functions for all the operators
 function chosenOperator(clickOperator) {
   let clickedOperator = clickOperator;
+  if (clickedOperator === "-" && !firstValue && !result) {
+    firstValue = "-";
+    return (currentDisplay.innerHTML =
+      firstValue + currentOperator + secondValue);
+  }
   //If user does an operator right after receiving = result...
-  if ((result || result === 0) && !-firstValue) {
+  if ((result || result === 0) && !firstValue) {
     currentOperator = clickedOperator;
     firstValue = result;
     result = "";
@@ -120,7 +125,7 @@ function getDecimal() {
 //Click function for results
 function getResult() {
   if (result || result === 0) {
-    return previousNumber.innerHTML = result + "=";
+    return (previousNumber.innerHTML = result + "=");
   }
   if (!currentOperator || !secondValue) {
     previousNumber.innerHTML = firstValue;
@@ -183,9 +188,11 @@ decimal.addEventListener("click", getDecimal);
 clear.addEventListener("click", resetCalc);
 remove.addEventListener("click", removeValue);
 
-// //keypress event listeners
+//keypress event listeners
+//listen to keypress
 window.addEventListener("keydown", getKeyboardInput);
 
+//key press functions
 function getKeyboardInput(e) {
   if (!isNaN(e.key)) {
     chosenNumber(e.key);
@@ -209,4 +216,5 @@ function getKeyboardInput(e) {
   }
 }
 
+//ISSUES
 //user cant enter negative value
