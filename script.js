@@ -225,6 +225,3 @@ function getKeyboardInput(e) {
     getDecimal();
   }
 }
-
-//ISSUES
-//after result, if spam operator, 0 disappears
